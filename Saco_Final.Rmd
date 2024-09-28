@@ -63,11 +63,11 @@ relative_abundance_ram_meso_df <- as.data.frame(relative_abundance_ram_meso)
 
 ```{r top copepods at ram stacked bar graph 200, include=FALSE}
 tow <- as.factor(relative_abundance_ram_meso_df$Tow)
-stacked_bar_plot_ram <- ggplot(relative_abundance_ram_meso_df, aes(x = tow, y = Relative_Abundance, fill = Species)) +
+stacked_bar_plot_ram_200 <- ggplot(relative_abundance_ram_meso_df, aes(x = tow, y = Relative_Abundance, fill = Species)) +
   geom_bar(stat = "identity") +
   labs(title = "Stacked Bar Graph", x = "Tow (microns)", y = "Relative Abundance") +
-  scale_fill_manual(values = c("Centropages_sp" = "red", "Acartia_sp" = "blue", "Calanus_sp" = "green", "Evadne_nordmanni" = "yellow", "Paracalanus_sp" = "orange", "Temora_longicornis" = "purple", "Oithona_sp" = "black", "Podon_polyphemoides" = "grey", "Pseudocalanus_sp" = "brown", "Copepod_nauplii" = "pink")) +  # Custom colors
+  scale_fill_manual(values = c("Centropages_sp" = "#00FFFF", "Acartia_sp" = "#89CFF0", "Calanus_sp" = "#0000FF", "Evadne_nordmanni" = "#191970", "Paracalanus_sp" = "#0096FF", "Temora_longicornis" = "#00A36C", "Oithona_sp" = "#7393B3", "Podon_polyphemoides" = "#5D3FD3", "Pseudocalanus_sp" = "#4682B4", "Copepod_nauplii" = "#CCCCFF")) +  # Custom colors
   theme_minimal()
 
-print(stacked_bar_plot_ram)
+print(stacked_bar_plot_ram_200)
 ```
