@@ -98,7 +98,7 @@ tow <- as.factor(ram_relative_abundance_df$Tow)
 stacked_bar_plot_ram <- ggplot(ram_relative_abundance_df, aes(x = tow, y = Relative_Abundance, fill = Species)) +
   geom_bar(stat = "identity", width = 0.5) +
   labs(title = "Ram Island Most Common Copepods", x = "Tow (microns)", y = "Relative Abundance (%)") +
-  scale_fill_manual(values = c("Centropages_sp" = "#9FE2BF", "Acartia_sp" = "#89CFF0", "Calanus_sp" = "#0000FF", "Evadne_nordmanni" = "#191970", "Paracalanus_sp" = "#0096FF", "Obelia_sp" = "#AAFF00", "Carcinus_maenas" = "#AFE1AF", "Podon_polyphemoides" = "#5D3FD3", "Pseudocalanus_sp" = "#4682B4", "Gammarus_sp" = "#454B1B", "Oithona_sp" = "#7393B3", "Temora_longicornis" = "#00A36C", "Copepod_nauplii" = "#CCCCFF")) +  # Custom colors
+  scale_fill_manual(values = c("Centropages_sp" = "#9FE2BF", "Acartia_sp" = "#89CFF0", "Calanus_sp" = "#0000FF", "Evadne_nordmanni" = "#191970", "Paracalanus_sp" = "#0096FF", "Obelia_sp" = "#AAFF00", "Carcinus_maenas" = "#008080", "Podon_polyphemoides" = "#5D3FD3", "Pseudocalanus_sp" = "#4682B4", "Gammarus_sp" = "#454B1B", "Oithona_sp" = "#7393B3", "Temora_longicornis" = "#00A36C", "Copepod_nauplii" = "#CCCCFF")) +  # Custom colors
   theme_minimal()
 
 print(stacked_bar_plot_ram)
@@ -129,7 +129,7 @@ line_graph <- ggplot(data = date_count_ram_df, aes(x = Date, y = total_count, co
   theme(axis.text.x = element_text(angle = 45, hjust = 1)) +  # Rotate x-axis labels for readability
   ylab("Count") + xlab("Date") +  # Rename axis titles
   scale_color_manual(values = c(
-    "Acartia_sp" = "#89CFF0", "Calanus_sp" = "#0000FF", "Evadne_nordmanni" = "#191970", "Paracalanus_sp" = "#0096FF", "Obelia_sp" = "#AAFF00", "Carcinus_maenas" = "#AFE1AF", "Podon_polyphemoides" = "#5D3FD3", "Pseudocalanus_sp" = "#4682B4", "Gammarus_sp" = "#454B1B", "Oithona_sp" = "#7393B3", "Temora_longicornis" = "#00A36C", "Copepod_nauplii" = "#CCCCFF", "Centropages_sp" = "#9FE2BF"
+    "Acartia_sp" = "#89CFF0", "Calanus_sp" = "#0000FF", "Evadne_nordmanni" = "#191970", "Paracalanus_sp" = "#0096FF", "Obelia_sp" = "#AAFF00", "Carcinus_maenas" = "#008080", "Podon_polyphemoides" = "#5D3FD3", "Pseudocalanus_sp" = "#4682B4", "Gammarus_sp" = "#454B1B", "Oithona_sp" = "#7393B3", "Temora_longicornis" = "#00A36C", "Copepod_nauplii" = "#CCCCFF", "Centropages_sp" = "#9FE2BF"
   )) +  # Define colors for each species
   labs(title = "Count of Top Zooplankton Species Over Date")  # Add a title if desired
 
@@ -171,7 +171,7 @@ macro_line_graph <- ggplot(data = macro_date_count_ram_df, aes(x = Date, y = tot
   theme(axis.text.x = element_text(angle = 45, hjust = 1)) +  # Rotate x-axis labels for readability
   ylab("Count") + xlab("Date") +  # Rename axis titles
   scale_color_manual(values = c(
-    "Acartia_sp" = "#89CFF0", "Calanus_sp" = "#0000FF", "Evadne_nordmanni" = "#191970", "Paracalanus_sp" = "#0096FF", "Obelia_sp" = "#50C878", "Carcinus_maenas" = "#AFE1AF", "Podon_polyphemoides" = "#5D3FD3", "Pseudocalanus_sp" = "#4682B4", "Gammarus_sp" = "#454B1B", "Centropages_sp" = "#9FE2BF"
+    "Acartia_sp" = "#89CFF0", "Calanus_sp" = "#0000FF", "Evadne_nordmanni" = "#191970", "Paracalanus_sp" = "#0096FF", "Obelia_sp" = "#50C878", "Carcinus_maenas" = "#008080", "Podon_polyphemoides" = "#5D3FD3", "Pseudocalanus_sp" = "#4682B4", "Gammarus_sp" = "#454B1B", "Centropages_sp" = "#9FE2BF"
   )) +  # Define colors for each species
   labs(title = "Count of Top Macrozooplankton Species Over Date")  # Add a title if desired
 
