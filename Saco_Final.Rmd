@@ -56,8 +56,8 @@ print(summary_count_ram)
 ```
 
 
-```{r top copepods at ram realtive abundance, include=FALSE}
-relative_abundance_ram_meso <- read.csv("relative_abundance_ram_meso.csv")
+```{r top copepods at ram realtive abundance meso, include=FALSE}
+meso <- read.csv("relative_abundance_ram_meso.csv")
 relative_abundance_ram_meso_df <- as.data.frame(relative_abundance_ram_meso)
 ```
 
@@ -70,4 +70,20 @@ stacked_bar_plot_ram_200 <- ggplot(relative_abundance_ram_meso_df, aes(x = tow, 
   theme_minimal()
 
 print(stacked_bar_plot_ram_200)
+```
+
+```{r top copepods at ram realtive abundance macro, include=FALSE}
+relative_abundance_ram_macro <- read.csv("relative_abundance_ram_macro.csv")
+relative_abundance_ram_macro_df <- as.data.frame(relative_abundance_ram_macro)
+```
+
+```{r top copepods at ram stacked bar graph 700, include=FALSE}
+tow <- as.factor(relative_abundance_ram_macro_df$Tow)
+stacked_bar_plot_ram_700 <- ggplot(relative_abundance_ram_macro_df, aes(x = tow, y = Relative_Abundance, fill = Species)) +
+  geom_bar(stat = "identity") +
+  labs(title = "Stacked Bar Graph", x = "Tow (microns)", y = "Relative Abundance") +
+  scale_fill_manual(values = c("Centropages_sp" = "#00FFFF", "Acartia_sp" = "#89CFF0", "Calanus_sp" = "#0000FF", "Evadne_nordmanni" = "#191970", "Paracalanus_sp" = "#0096FF", "Obelia_sp" = "#AAFF00", "Carcinus_maenas" = "#AFE1AF", "Podon_polyphemoides" = "#5D3FD3", "Pseudocalanus_sp" = "#4682B4", "Gammarus_sp" = "#454B1B")) +  # Custom colors
+  theme_minimal()
+
+print(stacked_bar_plot_ram_700)
 ```
