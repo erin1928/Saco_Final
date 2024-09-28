@@ -103,3 +103,36 @@ stacked_bar_plot_ram <- ggplot(ram_relative_abundance_df, aes(x = tow, y = Relat
 
 print(stacked_bar_plot_ram)
 ```
+
+```{r top copepods at ram and date, include=FALSE}
+# Summarize the data by Species and Count
+summary_date_count_ram <- ram_time_series %>%
+  group_by(Species, Tow, Date) %>%
+  summarize(total_count = sum(Count), .groups = 'drop') %>%
+  arrange(desc(total_count))  # Sort in descending order
+
+# Print the summarized result
+print(summary_date_count_ram)
+```
+
+```{r top copepods at ram count and date line graph, include=FALSE}
+
+ram_sorted_date_count <- summary_date_count_ram %>%
+  filter(Species %in% c("Acartia_sp", "Calanus_sp", "Evadne_nordmanni", "Paracalanus_sp", "Obelia_sp", "Carcinus_maenas", "Podon_polyphemoides", "Pseudocalanus_sp", "Gammarus_sp", "Oithona_sp", "Temora_longicornis", "Copepod_nauplii"))
+
+date_count_ram_df <- as.data.frame(ram_sorted_date_count)
+
+# Create the line graph
+line_graph <- ggplot(data = date_count_ram_df, aes(x = Date, y = total_count, color = Species, group = Species)) +
+  geom_line() +  # Add lines
+  geom_point() + # Optionally add points at data points
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +  # Rotate x-axis labels for readability
+  ylab("Count") + xlab("Date") +  # Rename axis titles
+  scale_color_manual(values = c(
+    "Acartia_sp" = "#89CFF0", "Calanus_sp" = "#0000FF", "Evadne_nordmanni" = "#191970", "Paracalanus_sp" = "#0096FF", "Obelia_sp" = "#AAFF00", "Carcinus_maenas" = "#AFE1AF", "Podon_polyphemoides" = "#5D3FD3", "Pseudocalanus_sp" = "#4682B4", "Gammarus_sp" = "#454B1B", "Oithona_sp" = "#7393B3", "Temora_longicornis" = "#00A36C", "Copepod_nauplii" = "#CCCCFF"
+  )) +  # Define colors for each species
+  labs(title = "Count of Species Over Salinity")  # Add a title if desired
+
+print(line_graph)  # Show the plot
+```
+
