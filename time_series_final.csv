@@ -1,4 +1,4 @@
-20,Date,Count,Site,Tow,Salinity,Temperature,BioVol
+Species,Date,Count,Site,Tow,Salinity,Temperature,BioVol
 Gammarus,5/22/2024,0,Ram,700,29.73,8.75,NA
 Hyperia_galba,5/22/2024,0,Ram,700,29.73,8.75,NA
 Acartia_sp,5/22/2024,0,Ram,700,29.73,8.75,NA

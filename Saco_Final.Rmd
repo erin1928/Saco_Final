@@ -31,7 +31,7 @@ tow <- as.factor(ram_time_series_df$Tow)
 
 ```
 
-```{r biovolume plot, include=FALSE}
+```{r ram biovolume plot, include=FALSE}
 # Create the plot
 biovolume_plot <- ggplot(data = ram_time_series_df, aes(x = Date, y = BioVol, fill = tow)) + 
   geom_bar(stat = "identity", position = "dodge") +  # Use dodge for side-by-side bars
@@ -39,7 +39,18 @@ biovolume_plot <- ggplot(data = ram_time_series_df, aes(x = Date, y = BioVol, fi
   ylab("BioVolume (mL)") + 
   xlab("Date") +  # Rename axis titles
   labs(title = "Biovolume over Date") +  # Add a title
-  scale_fill_manual(values = c("200" = "orange", 
-                                "700" = "purple"))  # Define custom colors
+  scale_fill_manual(values = c("200" = "black", 
+                                "700" = "grey"))  # Define custom colors
 print(biovolume_plot)  # Show the plot
+```
+
+```{r top copepods at ram, include=FALSE}
+
+# Summarize the data by Species and Count
+summary_count_ram <- ram_time_series %>%
+  group_by(Species, Tow) %>%
+  summarize(total_count_date = sum(Count), .groups = 'drop')
+
+# Print the summarized result
+print(summary_count_ram)
 ```
