@@ -87,3 +87,19 @@ stacked_bar_plot_ram_700 <- ggplot(relative_abundance_ram_macro_df, aes(x = tow,
 
 print(stacked_bar_plot_ram_700)
 ```
+
+```{r top copepods at ram realtive abundance all, include=FALSE}
+ram_relative_abundance <- read.csv("ram_relative_abundance.csv")
+ram_relative_abundance_df <- as.data.frame(ram_relative_abundance)
+```
+
+```{r top copepods at ram stacked bar graph both, include=FALSE}
+tow <- as.factor(ram_relative_abundance_df$Tow)
+stacked_bar_plot_ram <- ggplot(ram_relative_abundance_df, aes(x = tow, y = Relative_Abundance, fill = Species)) +
+  geom_bar(stat = "identity") +
+  labs(title = "Ram Island Most Common Copepods", x = "Tow (microns)", y = "Relative Abundance") +
+  scale_fill_manual(values = c("Centropages_sp" = "#00FFFF", "Acartia_sp" = "#89CFF0", "Calanus_sp" = "#0000FF", "Evadne_nordmanni" = "#191970", "Paracalanus_sp" = "#0096FF", "Obelia_sp" = "#AAFF00", "Carcinus_maenas" = "#AFE1AF", "Podon_polyphemoides" = "#5D3FD3", "Pseudocalanus_sp" = "#4682B4", "Gammarus_sp" = "#454B1B", "Oithona_sp" = "#7393B3", "Temora_longicornis" = "#00A36C", "Copepod_nauplii" = "#CCCCFF")) +  # Custom colors
+  theme_minimal()
+
+print(stacked_bar_plot_ram)
+```
