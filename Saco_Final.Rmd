@@ -45,12 +45,29 @@ print(biovolume_plot)  # Show the plot
 ```
 
 ```{r top copepods at ram, include=FALSE}
-
 # Summarize the data by Species and Count
 summary_count_ram <- ram_time_series %>%
   group_by(Species, Tow) %>%
-  summarize(total_count_date = sum(Count), .groups = 'drop')
+  summarize(total_count = sum(Count), .groups = 'drop') %>%
+  arrange(desc(total_count))  # Sort in descending order
 
 # Print the summarized result
 print(summary_count_ram)
+```
+
+
+```{r top copepods at ram realtive abundance, include=FALSE}
+relative_abundance_ram_meso <- read.csv("relative_abundance_ram_meso.csv")
+relative_abundance_ram_meso_df <- as.data.frame(relative_abundance_ram_meso)
+```
+
+```{r top copepods at ram stacked bar graph 200, include=FALSE}
+tow <- as.factor(relative_abundance_ram_meso_df$Tow)
+stacked_bar_plot_ram <- ggplot(relative_abundance_ram_meso_df, aes(x = tow, y = Relative_Abundance, fill = Species)) +
+  geom_bar(stat = "identity") +
+  labs(title = "Stacked Bar Graph", x = "Tow (microns)", y = "Relative Abundance") +
+  scale_fill_manual(values = c("Centropages_sp" = "red", "Acartia_sp" = "blue", "Calanus_sp" = "green", "Evadne_nordmanni" = "yellow", "Paracalanus_sp" = "orange", "Temora_longicornis" = "purple", "Oithona_sp" = "black", "Podon_polyphemoides" = "grey", "Pseudocalanus_sp" = "brown", "Copepod_nauplii" = "pink")) +  # Custom colors
+  theme_minimal()
+
+print(stacked_bar_plot_ram)
 ```
