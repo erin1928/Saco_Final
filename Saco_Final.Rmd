@@ -66,7 +66,7 @@ tow <- as.factor(relative_abundance_ram_meso_df$Tow)
 stacked_bar_plot_ram_200 <- ggplot(relative_abundance_ram_meso_df, aes(x = tow, y = Relative_Abundance, fill = Species)) +
   geom_bar(stat = "identity") +
   labs(title = "Stacked Bar Graph", x = "Tow (microns)", y = "Relative Abundance") +
-  scale_fill_manual(values = c("Centropages_sp" = "#00FFFF", "Acartia_sp" = "#89CFF0", "Calanus_sp" = "#0000FF", "Evadne_nordmanni" = "#191970", "Paracalanus_sp" = "#0096FF", "Temora_longicornis" = "#00A36C", "Oithona_sp" = "#7393B3", "Podon_polyphemoides" = "#5D3FD3", "Pseudocalanus_sp" = "#4682B4", "Copepod_nauplii" = "#CCCCFF")) +  # Custom colors
+  scale_fill_manual(values = c("Centropages_sp" = "#9FE2BF", "Acartia_sp" = "#89CFF0", "Calanus_sp" = "#0000FF", "Evadne_nordmanni" = "#191970", "Paracalanus_sp" = "#0096FF", "Temora_longicornis" = "#00A36C", "Oithona_sp" = "#7393B3", "Podon_polyphemoides" = "#5D3FD3", "Pseudocalanus_sp" = "#4682B4", "Copepod_nauplii" = "#CCCCFF")) +  # Custom colors
   theme_minimal()
 
 print(stacked_bar_plot_ram_200)
@@ -80,9 +80,9 @@ relative_abundance_ram_macro_df <- as.data.frame(relative_abundance_ram_macro)
 ```{r top copepods at ram stacked bar graph 700, include=FALSE}
 tow <- as.factor(relative_abundance_ram_macro_df$Tow)
 stacked_bar_plot_ram_700 <- ggplot(relative_abundance_ram_macro_df, aes(x = tow, y = Relative_Abundance, fill = Species)) +
-  geom_bar(stat = "identity") +
+  geom_bar(stat = "identity", width = 0.6) +
   labs(title = "Stacked Bar Graph", x = "Tow (microns)", y = "Relative Abundance") +
-  scale_fill_manual(values = c("Centropages_sp" = "#00FFFF", "Acartia_sp" = "#89CFF0", "Calanus_sp" = "#0000FF", "Evadne_nordmanni" = "#191970", "Paracalanus_sp" = "#0096FF", "Obelia_sp" = "#AAFF00", "Carcinus_maenas" = "#AFE1AF", "Podon_polyphemoides" = "#5D3FD3", "Pseudocalanus_sp" = "#4682B4", "Gammarus_sp" = "#454B1B")) +  # Custom colors
+  scale_fill_manual(values = c("Centropages_sp" = "#9FE2BF", "Acartia_sp" = "#89CFF0", "Calanus_sp" = "#0000FF", "Evadne_nordmanni" = "#191970", "Paracalanus_sp" = "#0096FF", "Obelia_sp" = "#AAFF00", "Carcinus_maenas" = "#AFE1AF", "Podon_polyphemoides" = "#5D3FD3", "Pseudocalanus_sp" = "#4682B4", "Gammarus_sp" = "#454B1B")) +  # Custom colors
   theme_minimal()
 
 print(stacked_bar_plot_ram_700)
@@ -96,9 +96,9 @@ ram_relative_abundance_df <- as.data.frame(ram_relative_abundance)
 ```{r top copepods at ram stacked bar graph both, include=FALSE}
 tow <- as.factor(ram_relative_abundance_df$Tow)
 stacked_bar_plot_ram <- ggplot(ram_relative_abundance_df, aes(x = tow, y = Relative_Abundance, fill = Species)) +
-  geom_bar(stat = "identity") +
+  geom_bar(stat = "identity", width = 0.5) +
   labs(title = "Ram Island Most Common Copepods", x = "Tow (microns)", y = "Relative Abundance (%)") +
-  scale_fill_manual(values = c("Centropages_sp" = "#00FFFF", "Acartia_sp" = "#89CFF0", "Calanus_sp" = "#0000FF", "Evadne_nordmanni" = "#191970", "Paracalanus_sp" = "#0096FF", "Obelia_sp" = "#AAFF00", "Carcinus_maenas" = "#AFE1AF", "Podon_polyphemoides" = "#5D3FD3", "Pseudocalanus_sp" = "#4682B4", "Gammarus_sp" = "#454B1B", "Oithona_sp" = "#7393B3", "Temora_longicornis" = "#00A36C", "Copepod_nauplii" = "#CCCCFF")) +  # Custom colors
+  scale_fill_manual(values = c("Centropages_sp" = "#9FE2BF", "Acartia_sp" = "#89CFF0", "Calanus_sp" = "#0000FF", "Evadne_nordmanni" = "#191970", "Paracalanus_sp" = "#0096FF", "Obelia_sp" = "#AAFF00", "Carcinus_maenas" = "#AFE1AF", "Podon_polyphemoides" = "#5D3FD3", "Pseudocalanus_sp" = "#4682B4", "Gammarus_sp" = "#454B1B", "Oithona_sp" = "#7393B3", "Temora_longicornis" = "#00A36C", "Copepod_nauplii" = "#CCCCFF")) +  # Custom colors
   theme_minimal()
 
 print(stacked_bar_plot_ram)
@@ -118,7 +118,7 @@ print(summary_date_count_ram)
 ```{r top copepods at ram count and date line graph both tows, include=FALSE}
 
 ram_sorted_date_count <- summary_date_count_ram %>%
-  filter(Species %in% c("Acartia_sp", "Calanus_sp", "Evadne_nordmanni", "Paracalanus_sp", "Obelia_sp", "Carcinus_maenas", "Podon_polyphemoides", "Pseudocalanus_sp", "Gammarus_sp", "Oithona_sp", "Temora_longicornis", "Copepod_nauplii"))
+  filter(Species %in% c("Acartia_sp", "Calanus_sp", "Evadne_nordmanni", "Paracalanus_sp", "Obelia_sp", "Carcinus_maenas", "Podon_polyphemoides", "Pseudocalanus_sp", "Gammarus_sp", "Oithona_sp", "Temora_longicornis", "Copepod_nauplii", "Centropages_sp"))
 
 date_count_ram_df <- as.data.frame(ram_sorted_date_count)
 
@@ -129,7 +129,7 @@ line_graph <- ggplot(data = date_count_ram_df, aes(x = Date, y = total_count, co
   theme(axis.text.x = element_text(angle = 45, hjust = 1)) +  # Rotate x-axis labels for readability
   ylab("Count") + xlab("Date") +  # Rename axis titles
   scale_color_manual(values = c(
-    "Acartia_sp" = "#89CFF0", "Calanus_sp" = "#0000FF", "Evadne_nordmanni" = "#191970", "Paracalanus_sp" = "#0096FF", "Obelia_sp" = "#AAFF00", "Carcinus_maenas" = "#AFE1AF", "Podon_polyphemoides" = "#5D3FD3", "Pseudocalanus_sp" = "#4682B4", "Gammarus_sp" = "#454B1B", "Oithona_sp" = "#7393B3", "Temora_longicornis" = "#00A36C", "Copepod_nauplii" = "#CCCCFF"
+    "Acartia_sp" = "#89CFF0", "Calanus_sp" = "#0000FF", "Evadne_nordmanni" = "#191970", "Paracalanus_sp" = "#0096FF", "Obelia_sp" = "#AAFF00", "Carcinus_maenas" = "#AFE1AF", "Podon_polyphemoides" = "#5D3FD3", "Pseudocalanus_sp" = "#4682B4", "Gammarus_sp" = "#454B1B", "Oithona_sp" = "#7393B3", "Temora_longicornis" = "#00A36C", "Copepod_nauplii" = "#CCCCFF", "Centropages_sp" = "#9FE2BF"
   )) +  # Define colors for each species
   labs(title = "Count of Top Zooplankton Species Over Date")  # Add a title if desired
 
@@ -139,18 +139,18 @@ print(line_graph)  # Show the plot
 ```{r top copepods at ram count and date line graph meso, include=FALSE}
 
 meso_ram_sorted_date_count <- summary_date_count_ram %>%
-  filter(Species %in% c("Acartia_sp", "Calanus_sp", "Evadne_nordmanni", "Paracalanus_sp", "Carcinus_maenas", "Podon_polyphemoides", "Pseudocalanus_sp", "Oithona_sp", "Temora_longicornis", "Copepod_nauplii"), Tow %in% c("200"))
+  filter(Species %in% c("Acartia_sp", "Calanus_sp", "Evadne_nordmanni", "Paracalanus_sp", "Podon_polyphemoides", "Pseudocalanus_sp", "Oithona_sp", "Temora_longicornis", "Copepod_nauplii", "Centropages_sp"), Tow %in% c("200"))
 
 meso_date_count_ram_df <- as.data.frame(meso_ram_sorted_date_count)
 
 # Create the line graph
-meso_line_graph <- ggplot(data = date_count_ram_df, aes(x = Date, y = total_count, color = Species, group = Species)) +
+meso_line_graph <- ggplot(data = meso_date_count_ram_df, aes(x = Date, y = total_count, color = Species, group = Species)) +
   geom_line() +  # Add lines
   geom_point() + # Optionally add points at data points
   theme(axis.text.x = element_text(angle = 45, hjust = 1)) +  # Rotate x-axis labels for readability
   ylab("Count") + xlab("Date") +  # Rename axis titles
   scale_color_manual(values = c(
-    "Acartia_sp" = "#89CFF0", "Calanus_sp" = "#0000FF", "Evadne_nordmanni" = "#191970", "Paracalanus_sp" = "#0096FF", "Podon_polyphemoides" = "#5D3FD3", "Pseudocalanus_sp" = "#4682B4", "Oithona_sp" = "#7393B3", "Temora_longicornis" = "#00A36C", "Copepod_nauplii" = "#CCCCFF"
+    "Acartia_sp" = "#89CFF0", "Calanus_sp" = "#0000FF", "Evadne_nordmanni" = "#191970", "Paracalanus_sp" = "#0096FF", "Podon_polyphemoides" = "#5D3FD3", "Pseudocalanus_sp" = "#4682B4", "Oithona_sp" = "#7393B3", "Temora_longicornis" = "#00A36C", "Copepod_nauplii" = "#CCCCFF", "Centropages_sp" = "#9FE2BF"
   )) +  # Define colors for each species
   labs(title = "Count of Top Mesozooplankton Species Over Date")  # Add a title if desired
 
@@ -160,18 +160,18 @@ print(meso_line_graph)  # Show the plot
 ```{r top copepods at ram count and date line graph macro, include=FALSE}
 
 macro_ram_sorted_date_count <- summary_date_count_ram %>%
-  filter(Species %in% c("Acartia_sp", "Calanus_sp", "Evadne_nordmanni", "Paracalanus_sp", "Obelia_sp", "Carcinus_maenas", "Podon_polyphemoides", "Pseudocalanus_sp", "Gammarus_sp"), Tow %in% c("700"))
+  filter(Species %in% c("Acartia_sp", "Calanus_sp", "Evadne_nordmanni", "Paracalanus_sp", "Obelia_sp", "Carcinus_maenas", "Podon_polyphemoides", "Pseudocalanus_sp", "Gammarus_sp", "Centropages_sp"), Tow %in% c("700"))
 
 macro_date_count_ram_df <- as.data.frame(macro_ram_sorted_date_count)
 
 # Create the line graph
-macro_line_graph <- ggplot(data = date_count_ram_df, aes(x = Date, y = total_count, color = Species, group = Species)) +
+macro_line_graph <- ggplot(data = macro_date_count_ram_df, aes(x = Date, y = total_count, color = Species, group = Species)) +
   geom_line() +  # Add lines
   geom_point() + # Optionally add points at data points
   theme(axis.text.x = element_text(angle = 45, hjust = 1)) +  # Rotate x-axis labels for readability
   ylab("Count") + xlab("Date") +  # Rename axis titles
   scale_color_manual(values = c(
-    "Acartia_sp" = "#89CFF0", "Calanus_sp" = "#0000FF", "Evadne_nordmanni" = "#191970", "Paracalanus_sp" = "#0096FF", "Obelia_sp" = "#AAFF00", "Carcinus_maenas" = "#AFE1AF", "Podon_polyphemoides" = "#5D3FD3", "Pseudocalanus_sp" = "#4682B4", "Gammarus_sp" = "#454B1B"
+    "Acartia_sp" = "#89CFF0", "Calanus_sp" = "#0000FF", "Evadne_nordmanni" = "#191970", "Paracalanus_sp" = "#0096FF", "Obelia_sp" = "#50C878", "Carcinus_maenas" = "#AFE1AF", "Podon_polyphemoides" = "#5D3FD3", "Pseudocalanus_sp" = "#4682B4", "Gammarus_sp" = "#454B1B", "Centropages_sp" = "#9FE2BF"
   )) +  # Define colors for each species
   labs(title = "Count of Top Macrozooplankton Species Over Date")  # Add a title if desired
 
