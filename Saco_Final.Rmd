@@ -1,0 +1,45 @@
+---
+title: "Saco_Final"
+output: html_document
+date: "2024-09-28"
+---
+
+```{r import csv, include=FALSE}
+time_series <- read.csv("time_series_final.csv")
+time_series
+time_series <- na.omit(time_series)
+time_series
+```
+
+```{r make a datafram, include=FALSE}
+time_series_df <- as.data.frame(time_series)
+tow <- as.factor(time_series_df$Tow)
+```
+
+```{r load packages, include=FALSE}
+library(ggplot2)
+library(dplyr)
+```
+
+```{r take out Ram, include=FALSE}
+# Use filter to extract specific locations
+ram_time_series <- time_series_df %>%
+  filter(Site %in% c("Ram"))
+ram_time_series_df <- as.data.frame(ram_time_series)
+print(ram_time_series_df)
+tow <- as.factor(ram_time_series_df$Tow)
+
+```
+
+```{r biovolume plot, include=FALSE}
+# Create the plot
+biovolume_plot <- ggplot(data = ram_time_series_df, aes(x = Date, y = BioVol, fill = tow)) + 
+  geom_bar(stat = "identity", position = "dodge") +  # Use dodge for side-by-side bars
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +  # Rotate x-axis labels for readability
+  ylab("BioVolume (mL)") + 
+  xlab("Date") +  # Rename axis titles
+  labs(title = "Biovolume over Date") +  # Add a title
+  scale_fill_manual(values = c("200" = "orange", 
+                                "700" = "purple"))  # Define custom colors
+print(biovolume_plot)  # Show the plot
+```
