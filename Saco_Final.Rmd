@@ -177,4 +177,15 @@ macro_line_graph <- ggplot(data = macro_date_count_ram_df, aes(x = Date, y = tot
 
 print(macro_line_graph)  # Show the plot
 ```
+```{r month and biovol , include=FALSE}
+month_biovol <- read.csv("month_biovol.csv")
+month_biovol
+```
 
+```{r monthly meso ANOVA , include=FALSE}
+meso_biovol <- month_biovol %>%
+  filter(Tow %in% c("200"))
+month <- as.character(meso_biovol$Month)
+meso_aov <- aov(meso_biovol$X ~ meso_biovol$BioVol, data=meso_biovol, var.equal=TRUE)
+summary(meso_aov)
+```
