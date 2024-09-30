@@ -185,7 +185,19 @@ month_biovol
 ```{r monthly meso ANOVA , include=FALSE}
 meso_biovol <- month_biovol %>%
   filter(Tow %in% c("200"))
-month <- as.character(meso_biovol$Month)
-meso_aov <- aov(meso_biovol$X ~ meso_biovol$BioVol, data=meso_biovol, var.equal=TRUE)
+month <- as.factor(meso_biovol$Month)
+biovol <- as.numeric(meso_biovol$BioVol)
+meso_aov <- aov(biovol ~ month, data=meso_biovol, var.equal=TRUE)
 summary(meso_aov)
+TukeyHSD(meso_aov)
+```
+
+```{r monthly macro ANOVA , include=FALSE}
+macro_biovol <- month_biovol %>%
+  filter(Tow %in% c("700"))
+month <- as.factor(meso_biovol$Month)
+biovol <- as.numeric(meso_biovol$BioVol)
+macro_aov <- aov(biovol ~ month, data=macro_biovol, var.equal=TRUE)
+summary(macro_aov)
+TukeyHSD(macro_aov)
 ```
