@@ -33,7 +33,7 @@ tow <- as.factor(ram_time_series_df$Tow)
 
 ```{r ram biovolume plot, include=FALSE}
 # Create the plot
-biovolume_plot <- ggplot(data = ram_time_series_df, aes(x = Date, y = BioVol, fill = tow)) + 
+biovolume_plot <- ggplot(data = ram_time_series_df, aes(x = Date, y = BioVol_Filtered, fill = tow)) + 
   geom_bar(stat = "identity", position = "dodge") +  # Use dodge for side-by-side bars
   theme(axis.text.x = element_text(angle = 45, hjust = 1, size = 14),  # Rotate x-axis labels for readability and adjust size
     axis.text.y = element_text(size = 14),  # Adjust y-axis text size
@@ -59,6 +59,17 @@ summary_count_ram <- ram_time_series %>%
 print(summary_count_ram)
 ```
 
+```{r total filtered count at ram, include=FALSE}
+count_filtered <- as.numeric(time_series_df$Count_Filtered)
+# Summarize the data by Species and Filtered Count
+summary_filtered_count_ram <- ram_time_series %>%
+  group_by(Species, Tow) %>%
+  summarize(total_filtered_count = sum(count_filtered), .groups = 'drop') %>%
+  arrange(desc(total_filtered_count))  # Sort in descending order
+
+# Print the summarized result
+print(summary_filtered_count_ram)
+```
 
 ```{r top copepods at ram realtive abundance meso, include=FALSE}
 meso <- read.csv("relative_abundance_ram_meso.csv")
