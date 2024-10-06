@@ -245,7 +245,7 @@ month_biovol
 meso_biovol <- month_biovol %>%
   filter(Tow %in% c("200"))
 month <- as.factor(meso_biovol$Month)
-biovol <- as.numeric(meso_biovol$BioVol)
+biovol_filtered <- as.numeric(meso_biovol$Filtered_BioVol)
 meso_aov <- aov(BioVol ~ month, data = meso_biovol)
 summary(meso_aov)
 TukeyHSD(meso_aov)
@@ -259,7 +259,7 @@ t.test(meso_biovol$BioVol)
 macro_biovol <- month_biovol %>%
   filter(Tow %in% c("700"))
 month <- as.factor(macro_biovol$Month)
-biovol <- as.numeric(macro_biovol$BioVol)
+biovol_filtered <- as.numeric(macro_biovol$Filtered_BioVol)
 macro_aov <- aov(biovol ~ month, data=macro_biovol, var.equal=TRUE)
 summary(macro_aov)
 TukeyHSD(macro_aov)
