@@ -33,7 +33,7 @@ tow <- as.factor(ram_time_series_df$Tow)
 
 ```{r ram biovolume plot, include=FALSE}
 # Create the plot
-biovolume_plot <- ggplot(data = ram_time_series_df, aes(x = Date, y = BioVol_Filtered, fill = tow)) + 
+biovolume_plot <- ggplot(data = ram_time_series_df, aes(x = Date, y = BioVol, fill = tow)) + 
   geom_bar(stat = "identity", position = "dodge") +  # Use dodge for side-by-side bars
   theme(axis.text.x = element_text(angle = 45, hjust = 1, size = 14),  # Rotate x-axis labels for readability and adjust size
     axis.text.y = element_text(size = 14),  # Adjust y-axis text size
@@ -46,6 +46,23 @@ biovolume_plot <- ggplot(data = ram_time_series_df, aes(x = Date, y = BioVol_Fil
   scale_fill_manual(values = c("200" = "black", 
                                 "700" = "grey"))  # Define custom colors
 print(biovolume_plot)  # Show the plot
+```
+
+```{r ram biovolume filtered plot, include=FALSE}
+# Create the plot
+biovolume_plot_filtered <- ggplot(data = ram_time_series_df, aes(x = Date, y = BioVol_Filtered, fill = tow)) + 
+  geom_bar(stat = "identity", position = "dodge") +  # Use dodge for side-by-side bars
+  theme(axis.text.x = element_text(angle = 45, hjust = 1, size = 14),  # Rotate x-axis labels for readability and adjust size
+    axis.text.y = element_text(size = 14),  # Adjust y-axis text size
+    axis.title.x = element_text(size = 16),  # Adjust x-axis title size
+    axis.title.y = element_text(size = 16),  # Adjust y-axis title size
+    plot.title = element_text(size = 22, hjust = 0.5)) + # Adjust title size and center it)) +  # Rotate x-axis labels for readability
+  ylab(expression("BioVolume (individuals" ~ mL^{-1} * ")")) + 
+  xlab("Date") +  # Rename axis titles
+  labs(fill = "Mesh Size (microns)") +  # Add a title
+  scale_fill_manual(values = c("200" = "black", 
+                                "700" = "grey"))  # Define custom colors
+print(biovolume_plot_filtered)  # Show the plot
 ```
 
 ```{r top copepods at ram, include=FALSE}
@@ -63,13 +80,14 @@ print(summary_count_ram)
 count_filtered <- as.numeric(time_series_df$Count_Filtered)
 # Summarize the data by Species and Filtered Count
 summary_filtered_count_ram <- ram_time_series %>%
-  group_by(Species, Tow) %>%
-  summarize(total_filtered_count = sum(count_filtered), .groups = 'drop') %>%
+  group_by(Species, Tow, Date) %>%
+  summarize(total_filtered_count = sum(Count_Filtered), .groups = 'drop') %>%
   arrange(desc(total_filtered_count))  # Sort in descending order
 
 # Print the summarized result
 print(summary_filtered_count_ram)
 ```
+
 
 ```{r top copepods at ram realtive abundance meso, include=FALSE}
 meso <- read.csv("relative_abundance_ram_meso.csv")
@@ -118,6 +136,18 @@ stacked_bar_plot_ram <- ggplot(ram_relative_abundance_df, aes(x = tow, y = Relat
 
 print(stacked_bar_plot_ram)
 ```
+
+```{r top copepods at ram stacked bar graph both filtered, include=FALSE}
+tow <- as.factor(ram_relative_abundance_df$Tow)
+stacked_bar_plot_ram_filtered <- ggplot(ram_relative_abundance_df, aes(x = tow, y = Relative_Abundance_Filtered, fill = Species)) +
+  geom_bar(stat = "identity", width = 0.5) +
+  labs(x = "Tow (microns)", y = "Relative Abundance (%)") +
+  scale_fill_manual(values = c("Centropages_sp" = "#9FE2BF", "Acartia_sp" = "#89CFF0", "Calanus_sp" = "#0000FF", "Evadne_nordmanni" = "#191970", "Paracalanus_sp" = "#0096FF", "Obelia_sp" = "#AAFF00", "Carcinus_maenas" = "#008080", "Podon_polyphemoides" = "#5D3FD3", "Pseudocalanus_sp" = "#4682B4", "Gammarus_sp" = "#454B1B", "Oithona_sp" = "#7393B3", "Temora_longicornis" = "#00A36C", "Copepod_nauplii" = "#CCCCFF")) +  # Custom colors
+  theme_minimal()
+
+print(stacked_bar_plot_ram_filtered)
+```
+
 
 ```{r top copepods at ram and date, include=FALSE}
 # Summarize the data by Species and Count
@@ -237,4 +267,86 @@ TukeyHSD(macro_aov)
 
 ```{r macro t test , include=FALSE}
 t.test(macro_biovol$BioVol)
+```
+
+```{r top copepods at ram count and date line graph macro, include=FALSE}
+
+macro_ram_sorted_date_count <- summary_date_count_ram %>%
+  filter(Species %in% c("Acartia_sp", "Calanus_sp", "Evadne_nordmanni", "Paracalanus_sp", "Obelia_sp", "Carcinus_maenas", "Podon_polyphemoides", "Pseudocalanus_sp", "Gammarus_sp", "Centropages_sp"), Tow %in% c("700"))
+
+macro_date_count_ram_df <- as.data.frame(macro_ram_sorted_date_count)
+
+# Create the line graph
+macro_line_graph <- ggplot(data = macro_date_count_ram_df, aes(x = Date, y = total_count, color = Species, group = Species)) +
+  geom_line(size = 0.9) +  # Add lines
+  geom_point() + # Optionally add points at data points
+  theme(
+    axis.text.x = element_text(angle = 45, hjust = 1, size = 12),  # Adjust x-axis text size
+    axis.text.y = element_text(size = 14),  # Adjust y-axis text size
+    axis.title.x = element_text(size = 16),  # Adjust x-axis title size
+    axis.title.y = element_text(size = 16),   # Adjust y-axis title size
+    plot.title = element_text(size = 22, hjust = 0.5)
+  ) + 
+  ylab(expression("BioVolume (individuals" ~ mL^{-1} * ")")) + xlab("Date") +  # Rename axis titles
+  scale_color_manual(values = c(
+    "Acartia_sp" = "#89CFF0", "Calanus_sp" = "#0000FF", "Evadne_nordmanni" = "#191970", "Paracalanus_sp" = "#0096FF", "Obelia_sp" = "#50C878", "Carcinus_maenas" = "#008080", "Podon_polyphemoides" = "#5D3FD3", "Pseudocalanus_sp" = "#4682B4", "Gammarus_sp" = "#454B1B", "Centropages_sp" = "#9FE2BF"
+  )) +  # Define colors for each species
+  labs()  # Add a title if desired
+
+print(macro_line_graph)  # Show the plot
+```
+
+
+```{r top copepods at ram count and date line graph meso filtered, include=FALSE}
+
+meso_ram_sorted_date_count_filtered <- summary_filtered_count_ram %>%
+  filter(Species %in% c("Acartia_sp", "Calanus_sp", "Evadne_nordmanni", "Paracalanus_sp", "Podon_polyphemoides", "Pseudocalanus_sp", "Oithona_sp", "Temora_longicornis", "Copepod_nauplii", "Centropages_sp"), Tow %in% c("200"))
+
+meso_date_count_ram_filtered_df <- as.data.frame(meso_ram_sorted_date_count_filtered)
+
+# Create the line graph
+meso_line_graph_filtered <- ggplot(data = meso_date_count_ram_filtered_df, aes(x = Date, y = total_filtered_count, color = Species, group = Species)) +
+  geom_line(size = 0.9) +  # Add lines
+  geom_point() + # Optionally add points at data points
+  theme(
+    axis.text.x = element_text(angle = 45, hjust = 1, size = 12),  # Adjust x-axis text size
+    axis.text.y = element_text(size = 14),  # Adjust y-axis text size
+    axis.title.x = element_text(size = 16),  # Adjust x-axis title size
+    axis.title.y = element_text(size = 16),   # Adjust y-axis title size
+    plot.title = element_text(size = 22, hjust = 0.5)
+  ) + 
+  ylab(expression("Count (individuals" ~ m^{-3} * ")")) + xlab("Date") +  # Rename axis titles
+  scale_color_manual(values = c(
+    "Acartia_sp" = "#89CFF0", "Calanus_sp" = "#0000FF", "Evadne_nordmanni" = "#191970", "Paracalanus_sp" = "#0096FF", "Podon_polyphemoides" = "#5D3FD3", "Pseudocalanus_sp" = "#4682B4", "Oithona_sp" = "#7393B3", "Temora_longicornis" = "#00A36C", "Copepod_nauplii" = "#CCCCFF", "Centropages_sp" = "#9FE2BF"
+  )) +  # Define colors for each species
+  labs()  # Add a title if desired
+
+print(meso_line_graph_filtered)  # Show the plot
+```
+
+```{r top copepods at ram count and date line graph macro filtered, include=FALSE}
+
+macro_ram_sorted_date_count_filtered <- summary_filtered_count_ram %>%
+  filter(Species %in% c("Acartia_sp", "Calanus_sp", "Evadne_nordmanni", "Paracalanus_sp", "Obelia_sp", "Carcinus_maenas", "Podon_polyphemoides", "Pseudocalanus_sp", "Gammarus_sp", "Centropages_sp"), Tow %in% c("700"))
+
+macro_date_count_ram_filtered_df <- as.data.frame(macro_ram_sorted_date_count_filtered)
+
+# Create the line graph
+macro_line_graph_filtered <- ggplot(data = macro_date_count_ram_filtered_df, aes(x = Date, y = total_filtered_count, color = Species, group = Species)) +
+  geom_line(size = 0.9) +  # Add lines
+  geom_point() + # Optionally add points at data points
+  theme(
+    axis.text.x = element_text(angle = 45, hjust = 1, size = 12),  # Adjust x-axis text size
+    axis.text.y = element_text(size = 14),  # Adjust y-axis text size
+    axis.title.x = element_text(size = 16),  # Adjust x-axis title size
+    axis.title.y = element_text(size = 16),   # Adjust y-axis title size
+    plot.title = element_text(size = 22, hjust = 0.5)
+  ) + 
+  ylab(expression("BioVolume (individuals" ~ mL^{-1} * ")")) + xlab("Date") +  # Rename axis titles
+  scale_color_manual(values = c(
+    "Acartia_sp" = "#89CFF0", "Calanus_sp" = "#0000FF", "Evadne_nordmanni" = "#191970", "Paracalanus_sp" = "#0096FF", "Obelia_sp" = "#50C878", "Carcinus_maenas" = "#008080", "Podon_polyphemoides" = "#5D3FD3", "Pseudocalanus_sp" = "#4682B4", "Gammarus_sp" = "#454B1B", "Centropages_sp" = "#9FE2BF"
+  )) +  # Define colors for each species
+  labs()  # Add a title if desired
+
+print(macro_line_graph_filtered)  # Show the plot
 ```
