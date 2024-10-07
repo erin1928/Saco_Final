@@ -315,7 +315,7 @@ meso_line_graph_filtered <- ggplot(data = meso_date_count_ram_filtered_df, aes(x
     axis.title.y = element_text(size = 16),   # Adjust y-axis title size
     plot.title = element_text(size = 22, hjust = 0.5)
   ) + 
-  ylab(expression("Count (individuals" ~ m^{-3} * ")")) + xlab("Date") +  # Rename axis titles
+  ylab(expression("Count (individuals" ~ mL^{-1} * ~ m^{-3}*")")) + xlab("Date") +  # Rename axis titles
   scale_color_manual(values = c(
     "Acartia_sp" = "#89CFF0", "Calanus_sp" = "#0000FF", "Evadne_nordmanni" = "#191970", "Paracalanus_sp" = "#0096FF", "Podon_polyphemoides" = "#5D3FD3", "Pseudocalanus_sp" = "#4682B4", "Oithona_sp" = "#7393B3", "Temora_longicornis" = "#00A36C", "Copepod_nauplii" = "#CCCCFF", "Centropages_sp" = "#9FE2BF"
   )) +  # Define colors for each species
@@ -342,7 +342,7 @@ macro_line_graph_filtered <- ggplot(data = macro_date_count_ram_filtered_df, aes
     axis.title.y = element_text(size = 16),   # Adjust y-axis title size
     plot.title = element_text(size = 22, hjust = 0.5)
   ) + 
-  ylab(expression("BioVolume (individuals" ~ mL^{-1} * ")")) + xlab("Date") +  # Rename axis titles
+  ylab(expression("BioVolume (individuals" ~ mL^{-1} ~ m^{-3}* ")")) + xlab("Date") +  # Rename axis titles
   scale_color_manual(values = c(
     "Acartia_sp" = "#89CFF0", "Calanus_sp" = "#0000FF", "Evadne_nordmanni" = "#191970", "Paracalanus_sp" = "#0096FF", "Obelia_sp" = "#50C878", "Carcinus_maenas" = "#008080", "Podon_polyphemoides" = "#5D3FD3", "Pseudocalanus_sp" = "#4682B4", "Gammarus_sp" = "#454B1B", "Centropages_sp" = "#9FE2BF"
   )) +  # Define colors for each species
