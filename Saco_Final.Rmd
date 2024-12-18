@@ -28,8 +28,11 @@ ram_time_series <- time_series_df %>%
 ram_time_series_df <- as.data.frame(ram_time_series)
 print(ram_time_series_df)
 tow <- as.factor(ram_time_series_df$Tow)
-
+class(ram_time_series_df$Date)
+ram_time_series_df$Date <- as.Date(ram_time_series_df$Date, format = "%m/%d/%Y")
+ram_time_series_df$Date
 ```
+
 
 ```{r ram biovolume plot, include=FALSE}
 # Create the plot
