@@ -30,13 +30,14 @@ print(ram_time_series_df)
 tow <- as.factor(ram_time_series_df$Tow)
 class(ram_time_series_df$Date)
 ram_time_series_df$Date <- as.Date(ram_time_series_df$Date, format = "%m/%d/%Y")
-ram_time_series_df$Date
+date <- ram_time_series_df$Date
+date
 ```
 
 
 ```{r ram biovolume plot, include=FALSE}
 # Create the plot
-biovolume_plot <- ggplot(data = ram_time_series_df, aes(x = Date, y = BioVol, fill = tow)) + 
+biovolume_plot <- ggplot(data = ram_time_series_df, aes(x = date, y = BioVol, fill = tow)) + 
   geom_bar(stat = "identity", position = "dodge") +  # Use dodge for side-by-side bars
   theme(axis.text.x = element_text(angle = 45, hjust = 1, size = 14),  # Rotate x-axis labels for readability and adjust size
     axis.text.y = element_text(size = 14),  # Adjust y-axis text size
@@ -47,7 +48,9 @@ biovolume_plot <- ggplot(data = ram_time_series_df, aes(x = Date, y = BioVol, fi
   xlab("Date") +  # Rename axis titles
   labs(fill = "Mesh Size (microns)") +  # Add a title
   scale_fill_manual(values = c("200" = "black", 
-                                "700" = "grey"))  # Define custom colors
+                                "700" = "grey")) + # Define custom colors
+scale_x_date(labels = scales::date_format("%m/%d/%Y"))  # Custom format: MM/DD/YYYY
+
 print(biovolume_plot)  # Show the plot
 ```
 
@@ -71,7 +74,7 @@ print(biovolume_plot_filtered)  # Show the plot
 ```{r top copepods at ram, include=FALSE}
 # Summarize the data by Species and Count
 summary_count_ram <- ram_time_series %>%
-  group_by(Species, Tow) %>%
+  group_by(X, Tow) %>%
   summarize(total_count = sum(Count), .groups = 'drop') %>%
   arrange(desc(total_count))  # Sort in descending order
 
@@ -79,16 +82,71 @@ summary_count_ram <- ram_time_series %>%
 print(summary_count_ram)
 ```
 
-```{r total filtered count at ram, include=FALSE}
-count_filtered <- as.numeric(time_series_df$Count_Filtered)
-# Summarize the data by Species and Filtered Count
-summary_filtered_count_ram <- ram_time_series %>%
-  group_by(Species, Tow, Date) %>%
-  summarize(total_filtered_count = sum(Count_Filtered), .groups = 'drop') %>%
-  arrange(desc(total_filtered_count))  # Sort in descending order
+```{r combine centropages counts, include=FALSE}
+# Combine the total counts for centropages_hamatus, centropages_sp, and centropages_typicus in the Species column
+summary_count_ram <- ram_time_series %>%
+  # Create a new Species category for Centropages species
+  mutate(Species_combined = case_when(
+    X %in% c("Centropages_hamatus", "Centropages_sp", "Centropages_typicus") ~ "Centropages_group", 
+    TRUE ~ as.character(X)  # Keep other species as they are
+  )) %>%
+  # Group by the new combined Species column and Tow
+  group_by(Species_combined, Tow) %>%
+  # Summarize total count for each combined species and Tow
+  summarize(total_count = sum(Count, na.rm = TRUE), .groups = 'drop') %>%
+  # Sort by total_count in descending order
+  arrange(desc(total_count))
 
 # Print the summarized result
-print(summary_filtered_count_ram)
+print(summary_count_ram)
+
+```
+
+```{r adding up filtered counts, include=FALSE}
+# Summarize the data by Species and Tow, adding up all filtered counts
+summary_filtered_count_species_tow <- ram_time_series_df %>%
+  mutate(Count_Filtered = as.numeric(Count_Filtered)) %>%  # Ensure Count_Filtered is numeric
+  group_by(X, Tow) %>%  # Group by Species and Tow
+  summarize(total_filtered_count = sum(Count_Filtered, na.rm = TRUE), .groups = 'drop') %>%  # Sum the filtered counts
+  arrange(X, Tow)  # Optional: Sort by Species and Tow
+
+# Print the summarized result
+print(summary_filtered_count_species_tow)
+```
+
+```{r adding relative abundance category, include=FALSE}
+# Create the relative abundance column
+summary_filtered_count_species_tow <- summary_filtered_count_species_tow %>%
+  mutate(Count_Filtered = as.numeric(Count_Filtered)) %>%  # Ensure Count_Filtered is numeric
+  group_by(X, Tow) %>%  # Group by Species and Tow
+  mutate(total_tow_filtered = sum(Count_Filtered, na.rm = TRUE)) %>%  # Calculate total Count_Filtered per Tow
+  ungroup() %>%  # Ungroup to prevent issues when applying other functions
+  mutate(relative_abundance = Count_Filtered / total_tow_filtered) %>%  # Calculate relative abundance
+  arrange(X, Tow)  # Optional: Sort by Species and Tow
+
+# Print the summarized result with relative abundance
+print(summary_filtered_count_species_tow)
+
+```
+```{r 1 RA for each tow?, include=FALSE}
+# Create relative abundance for each species and summarize by Species across Tow categories (200 and 700)
+summary_relative_abundance <- ram_time_series %>%
+  mutate(Count_Filtered = as.numeric(Count_Filtered)) %>%  # Ensure Count_Filtered is numeric
+  group_by(X, Tow) %>%  # Group by Species and Tow
+  mutate(total_tow_filtered = sum(Count_Filtered, na.rm = TRUE)) %>%  # Calculate total Count_Filtered per Tow
+  ungroup() %>%  # Ungroup to prevent issues with subsequent mutate
+  mutate(relative_abundance = Count_Filtered / total_tow_filtered) %>%  # Calculate relative abundance for each row
+  # Filter for only tow categories 200 and 700
+  filter(Tow %in% c("200", "700")) %>%
+  # Summarize relative abundance for each Species across Tow categories (200 and 700)
+  group_by(X) %>%
+  summarize(relative_abundance_200_700 = sum(relative_abundance, na.rm = TRUE), .groups = 'drop') %>%
+  arrange(X)  # Optional: Sort by Species for better readability
+
+# Print the summarized result
+print(summary_relative_abundance)
+
+
 ```
 
 
@@ -97,9 +155,34 @@ meso <- read.csv("relative_abundance_ram_meso.csv")
 relative_abundance_ram_meso_df <- as.data.frame(relative_abundance_ram_meso)
 ```
 
+```{r combine centropages, include=FALSE}
+# Combine the relative abundance columns for the three species
+summary_filtered_count_combined <- ram_time_series %>%
+  mutate(Count_Filtered = as.numeric(Count_Filtered)) %>%  # Ensure Count_Filtered is numeric
+  group_by(X, Tow) %>%  # Group by Species and Tow
+  mutate(total_tow_filtered = sum(Count_Filtered, na.rm = TRUE)) %>%  # Calculate total Count_Filtered per Tow
+  ungroup() %>%  # Ungroup to avoid issues with subsequent mutate
+  mutate(relative_abundance = Count_Filtered / total_tow_filtered) %>%  # Calculate relative abundance
+  # Create a new column to combine the relative abundance of specific species
+  mutate(combined_relative_abundance = case_when(
+    X == "centropages_hamatus" ~ relative_abundance,
+    X == "centropages_sp" ~ relative_abundance,
+    X == "centropages_typicus" ~ relative_abundance,
+    TRUE ~ 0  # For other species, assign 0
+  )) %>%
+  # Sum the combined relative abundance for the three species per Tow
+  group_by(Tow) %>%
+  mutate(combined_relative_abundance_sum = sum(combined_relative_abundance, na.rm = TRUE)) %>%
+  ungroup() %>%
+  arrange(X, Tow)  # Optional: Sort by Species and Tow
+
+# Print the summarized result with combined relative abundance
+print(summary_filtered_count_combined)
+```
+
 ```{r top copepods at ram stacked bar graph 200, include=FALSE}
-tow <- as.factor(relative_abundance_ram_meso_df$Tow)
-stacked_bar_plot_ram_200 <- ggplot(relative_abundance_ram_meso_df, aes(x = tow, y = Relative_Abundance, fill = Species)) +
+tow <- as.factor(summary_filtered_count_species_tow$Tow)
+stacked_bar_plot_ram_200 <- ggplot(summary_filtered_count_species_tow, aes(x = tow, y = relative_abundance, fill = X)) +
   geom_bar(stat = "identity") +
   labs(x = "Tow (microns)", y = "Relative Abundance") +
   scale_fill_manual(values = c("Centropages_sp" = "#9FE2BF", "Acartia_sp" = "#89CFF0", "Calanus_sp" = "#0000FF", "Evadne_nordmanni" = "#191970", "Paracalanus_sp" = "#0096FF", "Temora_longicornis" = "#00A36C", "Oithona_sp" = "#7393B3", "Podon_polyphemoides" = "#5D3FD3", "Pseudocalanus_sp" = "#4682B4", "Copepod_nauplii" = "#CCCCFF")) +  # Custom colors
